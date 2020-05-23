@@ -11,7 +11,6 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  //declared variables
   TextEditingController _fullnameController;
   TextEditingController _emailController;
   //TextEditingController _classController;
@@ -61,44 +60,34 @@ class _RegisterPageState extends State<RegisterPage> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(color: colorWhite),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            /////////////////////////////////////////ITEM 1: clipPath//////////////////////////////////////////////
-            clipPathContainer(),
-            /////////////////////////////////////////clipPath//////////////////////////////////////////////
-            ////////////////////////////////////////////////////////////ITEM 2 EMAILContainer/////////////////////////////////
-            ModalProgressHUD(
-              inAsyncCall: showSpinner,
-              child: Form(
-                key: _formKey,
-                autovalidate: _validate,
-                child: Column(
-                  children: <Widget>[
-                    fullnameContainer(),
-                    classContainer(),
-                    emailContainer(),
-                    passwordContainer(),
-                    registerContainer(),
-                  ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              /////////////////////////////////////////ITEM 1: clipPath//////////////////////////////////////////////
+              clipPathContainer(),
+              /////////////////////////////////////////clipPath//////////////////////////////////////////////
+              ////////////////////////////////////////////////////////////ITEM 2 EMAILContainer/////////////////////////////////
+              ModalProgressHUD(
+                inAsyncCall: showSpinner,
+                child: Form(
+                  key: _formKey,
+                  autovalidate: _validate,
+                  child: Column(
+                    children: <Widget>[
+                      fullnameContainer(),
+                      classContainer(),
+                      emailContainer(),
+                      passwordContainer(),
+                      registerContainer(),
+                    ],
+                  ),
                 ),
-              ),
-            )
-            ////////////////////////////////////////////////////////////End of Container/////////////////////////////////
-            //////////////////////////////////////////////////////////////ITEM 3 CLASS container/////////////////////////////
-
-            ////////////////////////////////////////////////////////////END OF ITEM 3 CLASS container///////////////////////////
-            ////////////////////////////////////////////////////////////ITEM 4  EMAIL container///////////////////////////
-
-            ////////////////////////////////////////////////////////////END OF ITEM 4  EMAIL container///////////////////////////
-            //////////////////////////////////////////////////////////// ITEM 4  PASSWORD container///////////////////////////
-
-            ////////////////////////////////////////////////////////////End of Four container///////////////////////////
-            ////////////////////////////////////////////////////////////Five container ///////////////////////////
-
-            ////////////////////////////////////////////////////////////End of Five container///////////////////////////
-          ],
+              )
+              /////////////////////////////End of Five container///////////////////////////
+            ],
+          ),
         ),
       ),
     );
@@ -212,8 +201,6 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
-  ////////////////////////////////////////////////////////CONTAINER FORM FIELDS////////////////////////////
-//////////////////////////////////////////item 1: Clip path///////////////////////
   ClipPath clipPathContainer() {
     return ClipPath(
       clipper: MyClipper(),

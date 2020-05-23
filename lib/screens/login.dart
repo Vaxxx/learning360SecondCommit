@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:learning360/utilities/constants.dart';
 
 class LoginPage extends StatefulWidget {
+  static String levelName;
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -52,39 +54,41 @@ class _LoginPageState extends State<LoginPage> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(color: colorWhite),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            //////////////////////////////////////ITEM 1 //////////////////////////////////////////////////////////
-            clipPathContainer(),
-            //////////////////////////////////////ITEM 2 //////////////////////////////////////////////////////////
-            Form(
-              key: _formKey,
-              autovalidate: _validate,
-              child: Column(
-                children: <Widget>[
-                  emailContainer(),
-                  passwordContainer(),
-                  loginButtonContainer(),
-                ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              //////////////////////////////////////ITEM 1 //////////////////////////////////////////////////////////
+              clipPathContainer(),
+              //////////////////////////////////////ITEM 2 //////////////////////////////////////////////////////////
+              Form(
+                key: _formKey,
+                autovalidate: _validate,
+                child: Column(
+                  children: <Widget>[
+                    emailContainer(),
+                    passwordContainer(),
+                    loginButtonContainer(),
+                  ],
+                ),
               ),
-            ),
 
-            ////////////////////////////////////// END OF ITEM 2 //////////////////////////////////////////////////////////
-            //////////////////////////////////////ITEM 3:  PASSWORD //////////////////////////////////////////////////////////
+              ////////////////////////////////////// END OF ITEM 2 //////////////////////////////////////////////////////////
+              //////////////////////////////////////ITEM 3:  PASSWORD //////////////////////////////////////////////////////////
 
-            //////////////////////////////////////END OF ITEM 3 //////////////////////////////////////////////////////////
-            ////////////////////////////////////// ITEM 4 LOGIN BUTTON//////////////////////////////////////////////////////////
+              //////////////////////////////////////END OF ITEM 3 //////////////////////////////////////////////////////////
+              ////////////////////////////////////// ITEM 4 LOGIN BUTTON//////////////////////////////////////////////////////////
 
-            ////////////////////////////////////// END OF ITEM 4 //////////////////////////////////////////////////////////
-            ////////////////////////////////////// ITEM 5: log in with google//////////////////////////////////////////////////////////
-            googleLoginButtonContainer(),
-            ////////////////////////////////////// END OF ITEM 5 //////////////////////////////////////////////////////////
-            ////////////////////////////////////// ITEM 6 : DON'T HAVE AN ACCOUNT //////////////////////////////////////////////////////////
-            registerButtonContainer(),
-            ////////////////////////////////////// END OF ITEM 6 //////////////////////////////////////////////////////////
-          ],
+              ////////////////////////////////////// END OF ITEM 4 //////////////////////////////////////////////////////////
+              ////////////////////////////////////// ITEM 5: log in with google//////////////////////////////////////////////////////////
+              googleLoginButtonContainer(),
+              ////////////////////////////////////// END OF ITEM 5 //////////////////////////////////////////////////////////
+              ////////////////////////////////////// ITEM 6 : DON'T HAVE AN ACCOUNT //////////////////////////////////////////////////////////
+              registerButtonContainer(),
+              ////////////////////////////////////// END OF ITEM 6 //////////////////////////////////////////////////////////
+            ],
+          ),
         ),
       ),
     );
@@ -103,39 +107,41 @@ class _LoginPageState extends State<LoginPage> {
         child: Container(
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(color: colorWhite),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              //////////////////////////////////////ITEM 2 //////////////////////////////////////////////////////////
-              Padding(
-                padding: EdgeInsets.only(bottom: 20.0),
-              ),
-              Form(
-                key: _formKey,
-                autovalidate: _validate,
-                child: Column(
-                  children: <Widget>[
-                    emailContainer(),
-                    passwordContainer(),
-                    loginButtonContainer(),
-                  ],
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                //////////////////////////////////////ITEM 2 //////////////////////////////////////////////////////////
+                Padding(
+                  padding: EdgeInsets.only(bottom: 20.0),
                 ),
-              ),
-              ////////////////////////////////////// END OF ITEM 2 //////////////////////////////////////////////////////////
-              //////////////////////////////////////ITEM 3:  PASSWORD //////////////////////////////////////////////////////////
+                Form(
+                  key: _formKey,
+                  autovalidate: _validate,
+                  child: Column(
+                    children: <Widget>[
+                      emailContainer(),
+                      passwordContainer(),
+                      loginButtonContainer(),
+                    ],
+                  ),
+                ),
+                ////////////////////////////////////// END OF ITEM 2 //////////////////////////////////////////////////////////
+                //////////////////////////////////////ITEM 3:  PASSWORD //////////////////////////////////////////////////////////
 
-              //////////////////////////////////////END OF ITEM 3 //////////////////////////////////////////////////////////
-              ////////////////////////////////////// ITEM 4 //////////////////////////////////////////////////////////
+                //////////////////////////////////////END OF ITEM 3 //////////////////////////////////////////////////////////
+                ////////////////////////////////////// ITEM 4 //////////////////////////////////////////////////////////
 
-              ////////////////////////////////////// END OF ITEM 4 //////////////////////////////////////////////////////////
-              ////////////////////////////////////// ITEM 5: log in with google//////////////////////////////////////////////////////////
-              googleLoginButtonContainer(),
-              ////////////////////////////////////// END OF ITEM 5 //////////////////////////////////////////////////////////
-              ////////////////////////////////////// ITEM 6 : DONT HAVE AN ACCOUNT //////////////////////////////////////////////////////////
-              registerButtonContainer(),
-              ////////////////////////////////////// END OF ITEM 6 //////////////////////////////////////////////////////////
-            ],
+                ////////////////////////////////////// END OF ITEM 4 //////////////////////////////////////////////////////////
+                ////////////////////////////////////// ITEM 5: log in with google//////////////////////////////////////////////////////////
+                googleLoginButtonContainer(),
+                ////////////////////////////////////// END OF ITEM 5 //////////////////////////////////////////////////////////
+                ////////////////////////////////////// ITEM 6 : DONT HAVE AN ACCOUNT //////////////////////////////////////////////////////////
+                registerButtonContainer(),
+                ////////////////////////////////////// END OF ITEM 6 //////////////////////////////////////////////////////////
+              ],
+            ),
           ),
         ),
       ),
@@ -151,6 +157,7 @@ class _LoginPageState extends State<LoginPage> {
           hintText: 'Enter your Email',
           labelText: 'Enter your Email',
           hintStyle: TextStyle(color: colorGrey)),
+      keyboardType: TextInputType.emailAddress,
       controller: _emailController,
       validator: validateEmail,
     );
@@ -178,7 +185,7 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState.validate()) {
       //form details were filled correctly
       _formKey.currentState.save();
-      print('its okay');
+
       if (email.toLowerCase().trim() == 'admin@mail.com' &&
           pass.trim() == 'Vakporize') {
         //admin
@@ -189,10 +196,26 @@ class _LoginPageState extends State<LoginPage> {
           final user = await _auth.signInWithEmailAndPassword(
               email: email, password: pass);
           if (user != null) {
+            print('There is a user with credentials');
+
             ///meaning a record with the details exists
             ///so go to student dashboard
+            //
+            print('...........................................koijoijoi');
+
+            Firestore.instance
+                .collection('users')
+                .where('email', isEqualTo: email)
+                .snapshots()
+                .listen((data) =>
+                    // data.documents.forEach((doc) => print(doc['fullname'])));
+                    data.documents.forEach((doc) {
+                      LoginPage.levelName = doc['level'];
+                      print(doc['level']);
+                      print('XXXXXXXXXXXXXXXXXXXXXXXXX${LoginPage.levelName}');
+                    }));
             Navigator.pushNamed(context, '/student_dashboard');
-            // displayMsg('YOU ARE WELCOME!');
+            //displayMsg(x);
           }
         } catch (e) {
           displayMsg('Wrong details were entered: $e');

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learning360/model/course.dart';
 import 'package:learning360/model/firestore_services.dart';
+import 'package:learning360/screens/login.dart';
 
 class StudentDashboard extends StatefulWidget {
   @override
@@ -9,14 +10,24 @@ class StudentDashboard extends StatefulWidget {
 
 class _StudentDashboardState extends State<StudentDashboard> {
   int count = 0;
+
+  @override
+  void initState() {
+    print('initttttttttttttttttttttttttttttttttt');
+    print('Level Name: ${LoginPage.levelName}');
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    int _level = int.parse(LoginPage.levelName);
     return Scaffold(
       appBar: AppBar(
         title: Text('Courses'),
       ),
       body: StreamBuilder(
-        stream: FirestoreService().getCourses(),
+        stream: FirestoreService().getCoursesWithLevel(LoginPage.levelName),
         builder: (BuildContext context, AsyncSnapshot<List<Course>> snapshot) {
           if (snapshot.hasError || !snapshot.hasData)
             return CircularProgressIndicator();
@@ -27,11 +38,24 @@ class _StudentDashboardState extends State<StudentDashboard> {
                 return ListTile(
                   leading: Text(course.month),
                   title: Text(course.name),
-                  subtitle: Text("Semester: ${course.semester}"),
+                  subtitle: Text("Level: ${course.level}"),
+                  onTap: () {
+                    moveToFiles();
+                  },
+                  trailing: IconButton(
+                    icon: Icon(Icons.more_vert),
+                    onPressed: () {
+                      moveToFiles();
+                    },
+                  ),
                 );
               });
         },
       ),
     );
+  }
+
+  void moveToFiles() {
+    Navigator.pushNamed(context, '/student_materials');
   }
 }

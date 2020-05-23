@@ -14,6 +14,7 @@ class _CreateCourseState extends State<CreateCourse> {
   GlobalKey<FormState> _courseKey = GlobalKey<FormState>();
   bool _validate = false;
   bool showSpinner = false;
+  String levelValue = 'Enter Student Level';
   String semesterValue = 'Choose the Semester';
   String monthValue = 'Choose the Month';
   String yearValue = 'Choose the Year';
@@ -67,6 +68,7 @@ class _CreateCourseState extends State<CreateCourse> {
                 child: Column(
                   children: <Widget>[
                     nameContainer(),
+                    levelContainer(),
                     semesterContainer(),
                     monthContainer(),
                     yearContainer(),
@@ -102,6 +104,7 @@ class _CreateCourseState extends State<CreateCourse> {
                 child: Column(
                   children: <Widget>[
                     nameContainer(),
+                    levelContainer(),
                     semesterContainer(),
                     monthContainer(),
                     yearContainer(),
@@ -195,7 +198,62 @@ class _CreateCourseState extends State<CreateCourse> {
   }
 
   ///////////////////////////////////////END OF ITEM 2: FULL NAME/////////////////////////////////////////////
-  //////////////////////////////////////////ITEM 3: CLASS//////////////////////////////////////////////////
+  /////////////////////////////////////////ITEM 3: LEVEL//////////////////////////////////////////////////
+  Container levelContainer() {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: colorGreyWithOpacity, width: 1.0),
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+      child: Row(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
+            child: Icon(
+              Icons.class_,
+              color: colorGrey,
+            ),
+          ),
+          Container(
+            height: 10.0,
+            width: 1.0,
+            color: colorGreyWithOpacity,
+            margin: EdgeInsets.only(right: 10.0),
+          ),
+          ////remove container and place item here.....////////////////////
+          Expanded(
+            child: DropdownButton<String>(
+              value: levelValue,
+              onChanged: (String Value) {
+                setState(() {
+                  levelValue = Value;
+                });
+              },
+              items: <String>[
+                'Enter Student Level',
+                '1',
+                '2',
+                '3',
+                '4',
+                '5',
+                '6',
+                '7',
+              ].map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+///////////////////////////////////////END OF ITEM 3: LEVEL////////////////////////////////////////////
+  //////////////////////////////////////////ITEM 3: SEMESTER//////////////////////////////////////////////////
   Container semesterContainer() {
     return Container(
       decoration: BoxDecoration(
@@ -248,7 +306,7 @@ class _CreateCourseState extends State<CreateCourse> {
 
 ///////////////////////////////////////END OF ITEM 3: SEMESTER////////////////////////////////////////////
 
-  //////////////////////////////////////////ITEM 3: CLASS//////////////////////////////////////////////////
+  //////////////////////////////////////////ITEM 3: MONTH//////////////////////////////////////////////////
   Container monthContainer() {
     return Container(
       decoration: BoxDecoration(
@@ -307,9 +365,9 @@ class _CreateCourseState extends State<CreateCourse> {
     );
   }
 
-///////////////////////////////////////END OF ITEM 3: SEMESTER////////////////////////////////////////////
+///////////////////////////////////////END OF ITEM 3: MONTH////////////////////////////////////////////
 
-  //////////////////////////////////////////ITEM 3: MONTH//////////////////////////////////////////////////
+  //////////////////////////////////////////ITEM 3: YEAR//////////////////////////////////////////////////
   Container yearContainer() {
     return Container(
       decoration: BoxDecoration(
@@ -446,6 +504,7 @@ class _CreateCourseState extends State<CreateCourse> {
       //form fields are validated
       _courseKey.currentState.save();
       String _name = _nameController.text.trim();
+      String _level = levelValue;
       String _semester = semesterValue;
       String _month = monthValue;
       String _year = yearValue;
@@ -453,7 +512,11 @@ class _CreateCourseState extends State<CreateCourse> {
           "Name: $_name \nSemester: $_semester \n Month: $_month \n Year: $_year");
       try {
         Course course = Course(
-            name: _name, semester: _semester, month: _month, year: _month);
+            name: _name,
+            level: _level,
+            semester: _semester,
+            month: _month,
+            year: _month);
 
         await FirestoreService().addCourse(course);
         backToLastPage();

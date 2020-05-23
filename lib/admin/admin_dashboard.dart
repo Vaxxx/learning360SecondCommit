@@ -23,7 +23,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
   Widget portrait() {
     return Scaffold(
       appBar: AppBar(
-        title: Text('REGISTER'),
+        title: Text('Admin Dashboard'),
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -35,9 +35,9 @@ class _AdminDashboardState extends State<AdminDashboard> {
             /////////////////////////////////////////ITEM 1: clipPath//////////////////////////////////////////////
             clipPathContainer(),
             /////////////////////////////////////////clipPath//////////////////////////////////////////////
-            ////////////////////////////////////////////////////////////ITEM 2 EMAILContainer/////////////////////////////////
-
             createCourseContainer(),
+
+            createCourseUploadContainer(),
           ],
         ),
       ),
@@ -47,7 +47,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
   Widget landscape() {
     return Scaffold(
       appBar: AppBar(
-        title: Text('REGISTER'),
+        title: Text('Admin Dashboard'),
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -62,6 +62,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
             ////////////////////////////////////////////////////////////ITEM 2 EMAILContainer/////////////////////////////////
 
             createCourseContainer(),
+            createCourseUploadContainer(),
           ],
         ),
       ),
@@ -86,7 +87,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                   color: primaryColor),
             ),
             Text(
-              'REGISTER',
+              'Dashboard',
               style: TextStyle(
                   fontSize: 10.0,
                   fontWeight: FontWeight.bold,
@@ -98,6 +99,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
     );
   }
 
+////////////////////////////////////////////create course////////////////////////////////////////////////
   Container createCourseContainer() {
     return Container(
       margin: EdgeInsets.only(top: 20.0),
@@ -108,8 +110,8 @@ class _AdminDashboardState extends State<AdminDashboard> {
             child: FlatButton(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)),
-              splashColor: googleColor,
-              color: googleColor,
+              splashColor: splashColor,
+              color: splashColor,
               child: Row(
                 children: <Widget>[
                   Padding(
@@ -152,9 +154,71 @@ class _AdminDashboardState extends State<AdminDashboard> {
       ),
     );
   }
+  /////////////////////////////////////////end create course////////////////////////////////////////////////
+
+  ////////////////////////////////////////////course upload////////////////////////////////////////////////
+  Container createCourseUploadContainer() {
+    return Container(
+      margin: EdgeInsets.only(top: 20.0),
+      padding: EdgeInsets.only(left: 20.0, right: 20.0),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: FlatButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0)),
+              splashColor: splashColor,
+              color: splashColor,
+              child: Row(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(left: 20.0),
+                    child: Text(
+                      'Upload Course',
+                      style: TextStyle(color: colorWhite),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(),
+                  ),
+                  Transform.translate(
+                    offset: Offset(15.0, 0.0),
+                    child: Container(
+                      padding: EdgeInsets.all(5.0),
+                      child: FlatButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(28.0)),
+                        splashColor: colorWhite,
+                        color: colorWhite,
+                        child: Icon(
+                          Icons.book,
+                          color: primaryColor,
+                        ),
+                        onPressed: () {
+                          uploadCourse();
+                        },
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              onPressed: () {
+                uploadCourse();
+              },
+            ),
+          )
+        ],
+      ),
+    );
+  }
+  /////////////////////////////////////////end course upload////////////////////////////////////////////////
 
   void createCourse() {
     Navigator.pushNamed(context, '/create_course');
+  }
+
+  void uploadCourse() {
+    Navigator.pushNamed(context, '/upload_course');
   }
 } //admindashboardstate
 
