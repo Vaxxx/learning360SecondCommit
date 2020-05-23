@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "101780778758",
+    "firebase_url": "https://learning360-1096e.firebaseio.com",
+    "project_id": "learning360-1096e",
+    "storage_bucket": "learning360-1096e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:101780778758:android:afff945c6c3162cf1cf887",
+        "android_client_info": {
+          "package_name": "ng.com.createsoftware.learning360"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "101780778758-t1du60k37cpfqem3l8ft9hvatvdc4q83.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ng.com.createsoftware.learning360",
+            "certificate_hash": "8d03d2e35cb9a4be1e1254e830fce865da37c5b1"
+          }
+        },
+        {
+          "client_id": "101780778758-bkf08a7bsg3s0gd6d9tuod6s78d45qhi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTBEm95h0F1DMGpl20Q-3-Gg6em6Un9LU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "101780778758-bkf08a7bsg3s0gd6d9tuod6s78d45qhi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
